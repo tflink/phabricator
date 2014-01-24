@@ -114,6 +114,10 @@ final class PhabricatorDirectoryMainController
 
     $user = $this->getRequest()->getUser();
 
+    if (!$user->isLoggedIn()) {
+      return null;
+    }
+
     $task_query = id(new ManiphestTaskQuery())
       ->setViewer($user)
       ->withStatuses(array(ManiphestTaskStatus::STATUS_OPEN))
@@ -185,6 +189,11 @@ final class PhabricatorDirectoryMainController
 
   private function buildRevisionPanel() {
     $user = $this->getRequest()->getUser();
+
+    if (!$user->isLoggedIn()) {
+      return null;
+    }
+
     $user_phid = $user->getPHID();
 
     $revision_query = id(new DifferentialRevisionQuery())
@@ -244,6 +253,11 @@ final class PhabricatorDirectoryMainController
 
   private function buildTasksPanel() {
     $user = $this->getRequest()->getUser();
+
+    if (!$user->isLoggedIn()) {
+      return null;
+    }
+
     $user_phid = $user->getPHID();
 
     $task_query = id(new ManiphestTaskQuery())
@@ -275,6 +289,10 @@ final class PhabricatorDirectoryMainController
   private function buildTaskListView(array $tasks) {
     assert_instances_of($tasks, 'ManiphestTask');
     $user = $this->getRequest()->getUser();
+
+    if (!$user->isLoggedIn()) {
+      return null;
+    }
 
     $phids = array_merge(
       array_filter(mpull($tasks, 'getOwnerPHID')),
@@ -385,6 +403,10 @@ final class PhabricatorDirectoryMainController
     $request = $this->getRequest();
     $user = $request->getUser();
 
+    if (!$user->isLoggedIn()) {
+      return null;
+    }
+
     $phids = PhabricatorAuditCommentEditor::loadAuditPHIDsForUser($user);
 
     $query = new PhabricatorAuditQuery();
@@ -425,6 +447,10 @@ final class PhabricatorDirectoryMainController
   public function buildCommitPanel() {
     $request = $this->getRequest();
     $user = $request->getUser();
+
+    if (!$user->isLoggedIn()) {
+      return null;
+    }
 
     $phids = array($user->getPHID());
 
